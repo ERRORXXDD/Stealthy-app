@@ -1,0 +1,6 @@
+{
+  "name": "Errorify",
+  "description": "An innocent-looking, fully functional personal notes and journal application with an ultra-secure hidden vault accessible only via secret gestures.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

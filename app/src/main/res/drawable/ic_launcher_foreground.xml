@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Whole cat silhouette, centered, no internal details -->
+    <!-- Head and Body -->
+    <path
+        android:fillColor="#1C1B1F"
+        android:pathData="M 54,32 C 48,32 43,37 43,43 C 43,44 43.1,45 43.3,46 C 39.5,49 37.5,53 37.5,58 C 37.5,68 42.5,73 54,73 C 65.5,73 70.5,68 70.5,58 C 70.5,53 68.5,49 64.7,46 C 64.9,45 65,44 65,43 C 65,37 60,32 54,32 Z" />
+    <!-- Left Ear -->
+    <path
+        android:fillColor="#1C1B1F"
+        android:pathData="M 37.5,58 L 29.5,37 L 45,45 Z" />
+    <!-- Right Ear -->
+    <path
+        android:fillColor="#1C1B1F"
+        android:pathData="M 70.5,58 L 78.5,37 L 63,45 Z" />
+    <!-- Tail curves gracefully -->
+    <path
+        android:fillColor="#1C1B1F"
+        android:pathData="M 68,69 C 75,69 81,64 81,54 C 81,51 79,49 77,49 C 75,49 74,51 74,54 C 74,60 69,64 65,64 Z" />
+</vector>
