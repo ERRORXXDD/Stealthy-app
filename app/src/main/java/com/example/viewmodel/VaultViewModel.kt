@@ -12,6 +12,7 @@ import com.example.camera.SecretCameraHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,9 +29,11 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = VaultRepository(application, db)
     
     val normalNotes: StateFlow<List<NormalNote>> = repository.normalNotes
+        .catch { emit(emptyList()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val intruderLogs: StateFlow<List<IntruderLog>> = repository.intruderLogs
+        .catch { emit(emptyList()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val failedAttempts = MutableStateFlow(0)
@@ -41,6 +44,7 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     val secretPhotos: StateFlow<List<SecretPhoto>> = isFakeMode
         .flatMapLatest { isFake ->
             db.vaultDao().getSecretPhotos(isDecoy = isFake)
+                .catch { emit(emptyList()) }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
         
@@ -48,6 +52,7 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     val secretFiles: StateFlow<List<SecretFile>> = isFakeMode
         .flatMapLatest { isFake ->
             db.vaultDao().getSecretFiles(isDecoy = isFake)
+                .catch { emit(emptyList()) }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 

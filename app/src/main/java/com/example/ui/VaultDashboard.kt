@@ -268,11 +268,7 @@ fun PicturesTab(
             ) {
                 items(photos) { photo ->
                     val bitmap = remember(photo.internalPath) {
-                        try {
-                            BitmapFactory.decodeFile(photo.internalPath)
-                        } catch (e: Exception) {
-                            null
-                        }
+                        decodeSampledBitmap(photo.internalPath, 200, 200)
                     }
                     Card(
                         modifier = Modifier
@@ -1395,7 +1391,7 @@ fun FullScreenPhotoViewer(
     onDelete: () -> Unit
 ) {
     val bitmap = remember(photo.internalPath) {
-        BitmapFactory.decodeFile(photo.internalPath)
+        decodeSampledBitmap(photo.internalPath, 1080, 1920)
     }
 
     Box(
@@ -1599,11 +1595,7 @@ fun IntruderLogsDialog(
                                     ) {
                                         val bitmap = remember(log.imagePath) {
                                             if (log.imagePath != null) {
-                                                try {
-                                                    BitmapFactory.decodeFile(log.imagePath)
-                                                } catch (e: Exception) {
-                                                    null
-                                                }
+                                                decodeSampledBitmap(log.imagePath, 150, 150)
                                             } else null
                                         }
 
@@ -1815,6 +1807,39 @@ fun CloudRestoreConfirmDialog(
             }
         }
     )
+}
+
+fun decodeSampledBitmap(path: String, reqWidth: Int, reqHeight: Int): android.graphics.Bitmap? {
+    return try {
+        val options = BitmapFactory.Options().apply {
+            inJustDecodeBounds = true
+        }
+        BitmapFactory.decodeFile(path, options)
+        
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+        options.inJustDecodeBounds = false
+        
+        BitmapFactory.decodeFile(path, options)
+    } catch (t: Throwable) {
+        t.printStackTrace()
+        null
+    }
+}
+
+fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    val height = options.outHeight
+    val width = options.outWidth
+    var inSampleSize = 1
+
+    if (height > reqHeight || width > reqWidth) {
+        val halfHeight = height / 2
+        val halfWidth = width / 2
+
+        while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+            inSampleSize *= 2
+        }
+    }
+    return inSampleSize
 }
 
 
